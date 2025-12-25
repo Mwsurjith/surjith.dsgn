@@ -50,12 +50,12 @@ export default function Nav() {
 
                     {/* Dropdown Menu */}
                     {isDropdownOpen && (
-                        <div className="absolute top-full left-0 mt-2 bg-zinc-800 border border-zinc-700 rounded-lg shadow-lg overflow-hidden z-50">
-                            <div className="p-2">
-                                <p className="text-xs text-zinc-500 uppercase tracking-wide px-2 py-1 mb-4">
+                        <div className="absolute top-full left-0 mt-2 bg-zinc-800 border border-zinc-700 rounded-2xl shadow-2xl overflow-hidden z-50 w-[320px]">
+                            <div className="p-4">
+                                <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-[0.2em] px-2 mb-4">
                                     Micro Apps
                                 </p>
-                                <div className="flex gap-2">
+                                <div className="grid grid-cols-3 gap-2">
                                     {microApps.map((app) => (
                                         <MicroAppCard
                                             key={app.id}
@@ -72,9 +72,9 @@ export default function Nav() {
                 </div>
 
                 {/* Author */}
-                <Link href="/" className="flex items-center gap-1 p-1.5 hover:opacity-80 transition-opacity">
+                <Link href="/" className="hidden md:flex items-center gap-1 p-1.5 hover:opacity-80 transition-opacity border-l border-zinc-700/50 ml-2 pl-4">
                     <p className="text-sm font-medium text-zinc-200">Surjith</p>
-                    <div className="flex items-center justify-center px-1 py-0.5 rounded bg-blue-500/10 text-blue-300 text-xs font-normal leading-[14px]">
+                    <div className="flex items-center justify-center px-1 py-0.5 rounded bg-blue-500/10 text-blue-300 text-[10px] font-bold uppercase tracking-wider leading-[14px]">
                         Product Designer
                     </div>
                 </Link>

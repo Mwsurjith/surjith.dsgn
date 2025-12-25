@@ -191,7 +191,7 @@ export default function HeuristicReport({ getHeuristicStats }) {
             <div className="mt-24 pt-12 border-t border-zinc-900 flex flex-col items-center">
                 <div className="flex items-center gap-2 grayscale opacity-40 hover:opacity-100 transition-opacity">
                     <span className="text-zinc-500 text-[10px] font-medium">Evaluation Powered by</span>
-                    <span className="text-white text-[12px] font-display italic">Surjith.ux Heuristics Engine</span>
+                    <span className="text-white text-[12px] font-display italic">Surjith.dsgn Heuristics Engine</span>
                 </div>
             </div>
         </div>

@@ -81,29 +81,36 @@ export const microApps = [
     {
         id: 1,
         name: 'Tic-Tac-Toe',
-        logo: '/microapps/tic-tac-toe-logo.png',
+        logo: '/microapps/tic-tac-toe.png',
         href: '/microapps/tic-tac-toe',
         bgColor: 'bg-zinc-800',
     },
     {
         id: 2,
         name: 'Micro Task',
-        logo: '/microapps/Micro-task.png',
+        logo: '/microapps/microtask.png',
         href: '/microapps/micro-task',
         bgColor: 'bg-zinc-800',
     },
     {
         id: 3,
         name: 'Timezone',
-        logo: '/microapps/timezone-logo.png',
+        logo: '/microapps/timezone.png',
         href: '/microapps/timezone',
-        bgColor: 'bg-amber-500',
+        bgColor: 'bg-zinc-800',
     },
     {
         id: 4,
         name: 'Heuristic Checklist',
-        logo: '/microapps/Micro-task.png', // Placeholder or custom logo
+        logo: '/microapps/heuristics.png',
         href: '/microapps/heuristic-checklist',
+        bgColor: 'bg-zinc-800',
+    },
+    {
+        id: 5,
+        name: 'Market Status',
+        logo: '/microapps/market.png',
+        href: '/microapps/market-status',
         bgColor: 'bg-zinc-800',
     }
 ];

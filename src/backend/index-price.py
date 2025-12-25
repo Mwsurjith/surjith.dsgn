@@ -1,73 +1,18 @@
 #!/usr/bin/env python3
 """
-NSE Index Data Fetcher with Supabase Integration
+NSE Index Data Fetcher - Incremental Supabase Sync
+Fetches Price & Valuation metrics (PE/PB/Div) using nsepython and syncs to Supabase.
+Default indices: NIFTY 50, NEXT 50, MIDCAP 150, SMLCAP 250, LARGEMID250.
 
-This script fetches comprehensive historical data for NSE equity indices including:
-- Price data (Open, High, Low, Close) 
-- Valuation metrics (PE, PB ratios)
-- Dividend yield information
-
-The script uses the `nsepython` library as the primary data source and saves all data
-directly to a Supabase database table for real-time access and analysis.
-
-Key Features:
-
-* **Supabase Integration** – All data is saved to and retrieved from a Supabase database
-  table named 'index-price' with automatic upsert functionality to handle duplicates
-* **Incremental Updates** – The script intelligently determines the last recorded date
-  for each index and only fetches new data, preventing duplicates and enabling
-  efficient daily updates
-* **Flexible Date Options** – Support for single date (--date YYYY-MM-DD) or 
-  custom date ranges (--start YYYY-MM-DD --end YYYY-MM-DD). Defaults to fetching
-  from 01-Jan-1990 to today if no dates specified
-* **Index Selection** – Fetch all NSE equity indices automatically, or specify
-  particular indices using --indices with comma-separated names
-* **Robust Error Handling** – Multi-strategy retry mechanism with automatic fallback
-  approaches for failed indices (original date range, 1-year, 6-month, 3-month)
-* **Real-time Progress Tracking** – Detailed logging showing processing status,
-  success/failure counts, and data quality metrics
-* **Data Validation** – Automatic data cleaning, duplicate removal, and type conversion
-* **Batch Processing** – Efficient batch uploads to Supabase with configurable batch sizes
-
-Technical Implementation:
-
-* **Data Sources**: 
-  - Live NSE indices feed (https://iislliveblob.niftyindices.com/jsonfiles/LiveIndicesWatch.json)
-  - nsepython library for historical price and valuation data
-  - Supabase PostgreSQL database for persistent storage
-* **Data Schema**: Standardized format with columns: date, symbol, open, high, low, close, pe, pb, div_yield
-* **Database Operations**: Upsert operations using 'date,symbol' composite key for data integrity
-* **Error Recovery**: Automatic retry with progressive date range reduction for problematic indices
-
-Usage Examples:
-
-    # Fetch data for a specific date
-    python3 indices-price.py --date 2025-12-24
+Usage:
+    # Fetch data for default indices
+    python index-price.py
     
-    # Fetch data for a custom date range
-    python3 indices-price.py --start 2025-07-01 --end 2025-12-24
+    # Fetch data for custom date range for default indices
+    python index-price.py --start 2025-01-01 --end 2025-12-24
     
     # Fetch specific indices only
-    python3 indices-price.py --indices "NIFTY 50,NIFTY BANK,NIFTY IT"
-    
-    # Daily update (fetches only new data since last run)
-    python3 indices-price.py
-    
-    # Fetch specific index with custom date range
-    python3 indices-price.py --start 2025-01-01 --indices "NIFTY 50"
-
-Database Configuration:
-    - Table: index-price
-    - Authentication: Service role key
-    - Conflict Resolution: Upsert on (date, symbol) composite key
-
-Output:
-    All data is saved directly to Supabase database. No local CSV files are created.
-    The script provides detailed console output showing processing progress and results.
-
-Dependencies:
-    pip install nsepython pandas numpy supabase requests
-
+    python index-price.py --indices "NIFTY 50,NIFTY NEXT 50,NIFTY MIDCAP 150,NIFTY SMLCAP 250,NIFTY LARGEMID250"
 """
 
 import argparse
@@ -78,7 +23,6 @@ import numpy as np
 from datetime import datetime, timedelta
 from nsepython import index_history, index_pe_pb_div
 from supabase import create_client, Client
-
 from dotenv import load_dotenv
 
 # Load environment variables from .env.local
@@ -92,11 +36,11 @@ TABLE_NAME = 'index_ind'
 
 # Default indices to fetch if none specified
 DEFAULT_INDICES = [
-    "NIFTY MIDCAP 150", 
-    "NIFTY LARGEMID250", 
-    "NIFTY 50", 
-    "NIFTY SMLCAP 250", 
-    "NIFTY NEXT 50"
+    "NIFTY 50",
+    "NIFTY NEXT 50",
+    "NIFTY MIDCAP 150",
+    "NIFTY SMLCAP 250",
+    "NIFTY LARGEMID250"
 ]
 
 
@@ -591,7 +535,7 @@ def main() -> None:
     parser.add_argument('--indices', 
                         help='Comma-separated list of specific NSE indices to fetch. '
                              'Example: "NIFTY 50,NIFTY BANK,NIFTY IT". '
-                             'If not specified, all available equity indices will be processed.')
+                             'If not specified, only default major indices will be processed.')
     # Retain deprecated options for backward compatibility
     parser.add_argument('--start-date', default=None,
                         help='[DEPRECATED] Use --start instead. Start date in DD-MMM-YYYY format.')
@@ -654,7 +598,7 @@ def main() -> None:
         if len(specific_indices) > 3:
             print(f"     ... and {len(specific_indices)-3} more")
     else:
-        print(f"   Target Indices: All available NSE equity indices")
+        print(f"   Target Indices: Default ({len(DEFAULT_INDICES)} indices)")
     print(f"💾 Update Strategy: Incremental (fetch only new data since last run)")
     print(f"🔄 Error Recovery: 4-tier fallback system with automatic retry")
     print(f"{'='*70}")
