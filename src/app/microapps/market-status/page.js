@@ -137,7 +137,7 @@ export default function MarketStatusPage() {
                 </div>
 
                 {/* Stats Section Unified Card */}
-                <div className="bg-zinc-900 border border-zinc-800/50 rounded-2xl mb-12 overflow-hidden">
+                <div className="bg-zinc-950 border border-zinc-800/50 rounded-2xl mb-12 overflow-hidden">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-zinc-800/50">
                         <StatItem
                             title="Top Gainer (1D)"

@@ -112,5 +112,12 @@ export const microApps = [
         logo: '/microapps/market.png',
         href: '/microapps/market-status',
         bgColor: 'bg-zinc-800',
+    },
+    {
+        id: 6,
+        name: 'Mockup Generator',
+        logo: '/microapps/mockup.png',
+        href: '/microapps/mockup',
+        bgColor: 'bg-zinc-800',
     }
 ];
